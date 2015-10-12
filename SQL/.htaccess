@@ -1,0 +1,19 @@
+# This prevents web browsers or spiders from seeing your .htaccess directives:
+<Files .htaccess>
+	deny from all
+</Files>
+
+RewriteEngine On
+RewriteRule ^cloudbase.png$ graphCloudbase.php [NC,L]
+RewriteRule ^press.png$     graphPress.php [NC,L]
+RewriteRule ^temp.png$      graphTempOut.php [NC,L]
+RewriteRule ^intemp.png$    graphTempIn.php [NC,L]
+RewriteRule ^hum.png$       graphHum.php [NC,L]
+RewriteRule ^inhum.png$     graphHumIn.php [NC,L]
+RewriteRule ^outhum.png$    graphHumOut.php [NC,L]
+RewriteRule ^rain.png$      graphRrate.php [NC,L]
+RewriteRule ^raint.png$     graphRain.php [NC,L]
+RewriteRule ^solar.png$     graphSolar.php [NC,L]
+RewriteRule ^uv.png$        graphUV.php [NC,L]
+RewriteRule ^wind.png$      graphWind.php [NC,L]
+RewriteRule ^windd.png$     graphWdir.php [NC,L]
