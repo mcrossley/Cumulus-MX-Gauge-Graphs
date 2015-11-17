@@ -32,7 +32,8 @@ $lineplot1->SetWeight(2);
 
 // Force labels to only be displayed every 1000 ft, tick every 500
 $graph->yaxis->scale->ticks->Set(1000, 500);
-$graph->xaxis->scale->setAutoMin(0);
+$graph->xaxis->scale->setGrace(5, 0);
+$graph->yaxis->scale->setAutoMin(0);
 
 // Add the plot to the graph
 $graph->Add($lineplot1);
