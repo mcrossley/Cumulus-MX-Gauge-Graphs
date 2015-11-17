@@ -30,8 +30,13 @@ $graph->title->Set('Cloudbase (' .$GRAPH['uom']['cloudbase']. ')');
 $lineplot1 = new LinePlot($data['cloudbasevalue'], $data['time']);
 $lineplot1->SetWeight(2);
 
-// Force labels to only be displayed every 1000 ft, tick every 500
-$graph->yaxis->scale->ticks->Set(1000, 500);
+if (strtolower(substr($GRAPH['uom']['cloudbase'], 0, 1)) === 'm') {
+	// Force labels to only be displayed every 500 m, tick every 100
+	$graph->yaxis->scale->ticks->Set(500, 100);
+} else {
+	// Force labels to only be displayed every 1000 ft, tick every 500
+	$graph->yaxis->scale->ticks->Set(1000, 500);
+}
 $graph->xaxis->scale->setGrace(5, 0);
 $graph->yaxis->scale->setAutoMin(0);
 
