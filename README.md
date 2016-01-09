@@ -35,7 +35,7 @@ Mark Wittl has kindly contributed a WindRose script, if you want to use this gra
 1. Modify the `jpgraph_windrose.php` file to remove the import of 'jpgraph_glayout_vh.inc.php'
 `//require_once('jpgraph_glayout_vh.inc.php');`
 2. Edit the `jp-config.inc.php` file to point to the font directory under the installed jpgraph location
-`define('TTF_DIR','<YOUR_PATH>/jpgraph/fonts/');
+`define('TTF_DIR','<YOUR_PATH>/jpgraph/fonts/');`
 You will need the following font files `arial.ttf` and `verdana.ttf`
 
 Good luck, you can normally find me on the [Cumulus forum](http://sandaysoft.com/forum)
