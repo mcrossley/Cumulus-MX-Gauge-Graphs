@@ -15,7 +15,7 @@ $GRAPH =  array();
 ############################################################################
 # CONFIGURATION INFORMATION
 ############################################################################
-$GRAPH['version']        = "0.4";
+$GRAPH['version']        = "1.0";
 $GRAPH['width']          = 600;
 $GRAPH['height']         = 300;
 $GRAPH['jsonloc']        = "/";
@@ -31,8 +31,9 @@ include $GRAPH['jpgraphloc'] . "jpgraph_line.php";
 include $GRAPH['jpgraphloc'] . "jpgraph_scatter.php";
 include $GRAPH['jpgraphloc'] . "jpgraph_date.php";
 include $GRAPH['jpgraphloc'] . "jpgraph_plotline.php";
+include $GRAPH['jpgraphloc'] . "jpgraph_windrose.php";
 
-// Set the TZ to UTC so times displlay in 'station' time
+// Set the TZ to UTC so times display in 'station' time
 date_default_timezone_set('UTC');
 
 ############################################################################
@@ -114,9 +115,9 @@ function reorg_data($dat) {
             if ($i === 0) {
                 // JavaScript time in msecs, convert to secs
 				$retVal['time'][] = $values[$j][0] / 1000;
-            }			
-            $retVal[$key][] = $values[$j][1];			
-        }	
+            }
+            $retVal[$key][] = $values[$j][1];
+        }
 	}
     return $retVal;
 }

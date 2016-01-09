@@ -15,7 +15,7 @@ $GRAPH =  array();
 ############################################################################
 # CONFIGURATION INFORMATION
 ############################################################################
-$GRAPH['version']        = "0.2";
+$GRAPH['version']        = "1.0";
 $GRAPH['width']          = 600;
 $GRAPH['height']         = 300;
 $GRAPH['jsonloc']        = "/";
@@ -34,8 +34,9 @@ include $GRAPH['jpgraphloc'] . "jpgraph_line.php";
 include $GRAPH['jpgraphloc'] . "jpgraph_scatter.php";
 include $GRAPH['jpgraphloc'] . "jpgraph_date.php";
 include $GRAPH['jpgraphloc'] . "jpgraph_plotline.php";
+include $GRAPH['jpgraphloc'] . "jpgraph_windrose.php";
 
-// Set the TZ to UTC so times displlay in 'station' time
+// Set the TZ to UTC so times display in 'station' time
 date_default_timezone_set('UTC');
 
 // Current field names (matches tag fields) used
