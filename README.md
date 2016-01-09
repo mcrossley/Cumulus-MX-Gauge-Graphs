@@ -39,4 +39,5 @@ Mark Wittl has kindly contributed a WindRose script, if you want to use this gra
 You will need the following font files `arial.ttf` and `verdana.ttf`
 
 Good luck, you can normally find me on the [Cumulus forum](http://sandaysoft.com/forum)
+
 Mark
