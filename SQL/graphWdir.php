@@ -48,9 +48,9 @@ $scatplot2->mark->SetWidth(3);
 $scatplot2->mark->SetColor("#000:1.3");
 $scatplot2->mark->SetFillColor("#000:1.3");
 
-// Add the plot to the graph
-$graph->Add($scatplot1);
+// Add the plots to the graph - put average plot on top
 $graph->Add($scatplot2);
+$graph->Add($scatplot1);
 
 $graph->setClipping(true);
 
