@@ -24,7 +24,7 @@ $data = get_data('wind');
 
 graph_common($graph);
 
-$graph->title->Set('Wind (' . $GRAPH['uom']['wind']. ')');
+$graph->title->Set('Wind (' . $data['units'] . ')');
 
 // Create the linear plot
 $lineplot1 = new LinePlot($data['wspeed'], $data['time']);
