@@ -15,26 +15,30 @@ $GRAPH =  array();
 ############################################################################
 # CONFIGURATION INFORMATION
 ############################################################################
-$GRAPH['version']        = "1.0";
+$GRAPH['version']        = '1.1';
 $GRAPH['width']          = 600;
 $GRAPH['height']         = 300;
-$GRAPH['jsonloc']        = "/";
-$GRAPH['jpgraphloc']     = "/jpgraph/"; // Path to jpgraph, or put it in your PHP path
+$GRAPH['jsonloc']        = '/';
+$GRAPH['jpgraphloc']     = '/jpgraph/'; // Path to jpgraph, or put it in your PHP path
 $GRAPH['cachetime']      = 10; // number of minutes to cache images
 $GRAPH['hours']          = 12; // number of hours to graph
 $GRAPH['uom']            = array('temp'=>'C', 'rain'=>'mm', 'wind'=>'mph', 'baro'=>'hPa', 'cloudbase'=>'feet');
+$GRAPH['rosePoints']     = 16;  // 8 or 16
+$GRAPH['roseSize']       = 400;
+// Localised Compass point array
+$GRAPH['compass']        = array('N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSW','SW','WSW','W','WNW','NW','NNW');
 
 #---------------------------------------------------------------------------
 
 ############################################################################
 # Includes for JpGraph
 ############################################################################
-include $GRAPH['jpgraphloc'] . "jpgraph.php";
-include $GRAPH['jpgraphloc'] . "jpgraph_line.php";
-include $GRAPH['jpgraphloc'] . "jpgraph_scatter.php";
-include $GRAPH['jpgraphloc'] . "jpgraph_date.php";
-include $GRAPH['jpgraphloc'] . "jpgraph_plotline.php";
-include $GRAPH['jpgraphloc'] . "jpgraph_windrose.php";
+include $GRAPH['jpgraphloc'] . 'jpgraph.php';
+include $GRAPH['jpgraphloc'] . 'jpgraph_line.php';
+include $GRAPH['jpgraphloc'] . 'jpgraph_scatter.php';
+include $GRAPH['jpgraphloc'] . 'jpgraph_date.php';
+include $GRAPH['jpgraphloc'] . 'jpgraph_plotline.php';
+include $GRAPH['jpgraphloc'] . 'jpgraph_windrose.php';
 
 // Set the TZ to UTC so times display in 'station' time
 date_default_timezone_set('UTC');

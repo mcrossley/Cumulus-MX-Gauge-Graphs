@@ -26,61 +26,26 @@ $datay = $w1['bearing'];
 $datay1 =$w1['wspeed'];
 
 //**************************************************************************************************************************************************
+
+//
+// getBin() converts a value in degrees (0-360) into a compass point bin (0-7 or 0-16)
+//
+function getBin($deg) {
+    global $GRAPH;
+
+    if ($GRAPH['rosePoints'] === 8) {
+        return floor(($deg + 22.5) / 45) % 8;
+    } else {
+        return floor(($deg + 11.25) / 22.5) % 16;
+    }
+}
+
 //The rest of the script is clearly explained at the jpgraph website.
 
 // Loop through raw data arrays and place data into the appropriate arrays
 // depending on their wind direction
 for ($ii = 0; $ii < count($datay); $ii++) {
-    switch($datay[$ii]) {
-    case ($datay[$ii] >= 348.75 or $datay[$ii] < 11.25):
-        $direction_array["N"][] = $datay1[$ii];
-        break;
-    case ($datay[$ii] >= 11.25 and $datay[$ii] < 33.75):
-        $direction_array["NNE"][] = $datay1[$ii];
-        break;
-    case ($datay[$ii] >= 33.75 and $datay[$ii] < 56.25):
-        $direction_array["NE"][] = $datay1[$ii];
-        break;
-    case ($datay[$ii] >= 56.25 and $datay[$ii] < 78.75):
-        $direction_array["ENE"][] = $datay1[$ii];
-        break;
-    case ($datay[$ii] >= 78.75 and $datay[$ii] < 101.25):
-        $direction_array["E"][] = $datay1[$ii];
-        break;
-    case ($datay[$ii] >= 101.25 and $datay[$ii] < 123.75):
-        $direction_array["ESE"][] = $datay1[$ii];
-        break;
-    case ($datay[$ii] >= 123.75 and $datay[$ii] < 146.25):
-        $direction_array["SE"][] = $datay1[$ii];
-        break;
-    case ($datay[$ii] >= 146.25 and $datay[$ii] < 168.75):
-        $direction_array["SSE"][] = $datay1[$ii];
-        break;
-    case ($datay[$ii] >= 168.75 and $datay[$ii] < 191.25):
-        $direction_array["S"][] = $datay1[$ii];
-        break;
-    case ($datay[$ii] >= 191.25 and $datay[$ii] < 213.75):
-        $direction_array["SSW"][] = $datay1[$ii];
-        break;
-    case ($datay[$ii] >= 213.75 and $datay[$ii] < 236.25):
-        $direction_array["SW"][] = $datay1[$ii];
-        break;
-    case ($datay[$ii] >= 236.25 and $datay[$ii] < 258.75):
-        $direction_array["WSW"][] = $datay1[$ii];
-        break;
-    case ($datay[$ii] >= 258.75 and $datay[$ii] < 281.25):
-        $direction_array["W"][] = $datay1[$ii];
-        break;
-    case ($datay[$ii] >= 281.25 and $datay[$ii] < 303.75):
-        $direction_array["WNW"][] = $datay1[$ii];
-        break;
-    case ($datay[$ii] >= 303.75 and $datay[$ii] < 326.25):
-        $direction_array["NW"][] = $datay1[$ii];
-        break;
-    case ($datay[$ii] >= 326.25 and $datay[$ii] < 348.75):
-        $direction_array["NNW"][] = $datay1[$ii];
-        break;
-    }
+    $direction_array[getBin($datay[$ii])][] = $datay1[$ii];
 }
 
 // Some directions may not have any data so this will create an array of the
@@ -144,14 +109,29 @@ foreach ($direction_keys as $direction) {
 //**************************************************************************************************************************************************
 
 // First create a new windrose graph with a title
-$graph = new WindroseGraph(400,400);
-$graph->title->Set('Windrose');
+$graph = new WindroseGraph($GRAPH['roseSize'], $GRAPH['roseSize'], $name, $GRAPH['cachetime']);
+$graph->title->Set('Windrose (' . $GRAPH['uom']['wind']. ')');
 
 // Create the windrose plot.
 $wp = new WindrosePlot($plot_data);
+if ($GRAPH['rosePoints'] === 8) {
+    $wp->SetType(WINDROSE_TYPE8);
+} else {
+    $wp->SetType(WINDROSE_TYPE16);
+}
+
+// we need to reverse and rotate the compass point array, as the wind rose starts at East and goes anti-clockwise!
+$GRAPH['compass'] = array_reverse($GRAPH['compass']);
+for ($i=0; $i<11; $i++) {
+    array_push($GRAPH['compass'], array_shift($GRAPH['compass']));
+}
+
+$wp->SetCompassLabels($GRAPH['compass']);
+
 $graph->Add($wp);
 
 // Add and send back to browser
+@unlink(CACHE_DIR . $name);
 $graph->Stroke();
 
 ?>
