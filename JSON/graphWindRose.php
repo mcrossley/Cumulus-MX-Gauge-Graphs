@@ -35,9 +35,9 @@ function getBin($deg) {
     global $GRAPH;
 
     if ($GRAPH['rosePoints'] === 8) {
-        return floor(($deg + 22.5) / 45) % 8;
+        return $GRAPH['compass'][floor(($deg + 22.5) / 45) % 8];
     } else {
-        return floor(($deg + 11.25) / 22.5) % 16;
+        return $GRAPH['compass'][floor(($deg + 11.25) / 22.5) % 16];
     }
 }
 
@@ -48,10 +48,6 @@ function getBin($deg) {
 for ($ii = 0; $ii < count($datay); $ii++) {
     $direction_array[getBin($datay[$ii])][] = $datay1[$ii];
 }
-
-// Some directions may not have any data so this will create an array of the
-// directions that do.
-$direction_keys = array_keys($direction_array);
 
 // Calculate max windspeed, used for windrose range
 $max_wind = round(max($datay1), 0);
@@ -66,7 +62,7 @@ $data_range_array = array(1, 5, 10, 15, 20, $wind_range_max);
 
 // Loop through dirction array based on direction keys and calculate the histogram
 // stats for each array.
-foreach ($direction_keys as $direction) {
+foreach ($GRAPH['compass'] as $direction) {
 
     // Set up counter to determine how many data points there are within each
     // direction array and wind range.
