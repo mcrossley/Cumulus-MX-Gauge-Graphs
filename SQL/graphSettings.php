@@ -15,7 +15,7 @@ $GRAPH =  array();
 ############################################################################
 # CONFIGURATION INFORMATION
 ############################################################################
-$GRAPH['version']        = '1.2';
+$GRAPH['version']        = '1.3';
 $GRAPH['width']          = 600;
 $GRAPH['height']         = 300;
 $GRAPH['jsonloc']        = '/';
@@ -119,6 +119,11 @@ function get_data($fields) {
     $mysqli = new mysqli($dbhost, $dbuser, $dbpassword, $database);
     if ($mysqli->connect_errno) {
       die('Failed to connect to the database server - ' . $mysqli->connect_error);
+    }
+
+    $result = $mysqli->query("SET time_zone='UTC'");
+    if (!$result) {
+        die("ERROR - TZ Statement");
     }
 
     $cols = '';
