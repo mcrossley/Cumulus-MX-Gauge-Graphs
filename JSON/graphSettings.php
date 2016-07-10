@@ -15,11 +15,12 @@ $GRAPH =  array();
 ############################################################################
 # CONFIGURATION INFORMATION
 ############################################################################
-$GRAPH['version']        = '1.2';
+$GRAPH['version']        = '1.4';
 $GRAPH['width']          = 600;
 $GRAPH['height']         = 300;
-$GRAPH['jsonloc']        = '/';
-$GRAPH['jpgraphloc']     = '/jpgraph/';
+$GRAPH['jsonloc']        = '/';         // NOTE: This is the *server* operating system path to the file, so unless you have added
+                                        // the web folder to your PHP path, it will be something like "/home/<userid>/www/"
+$GRAPH['jpgraphloc']     = '/jpgraph/'; // NOTE: Same path type as json above
 $GRAPH['cachetime']      = 10;
 $GRAPH['rosePoints']     = 16;  // 8 or 16
 $GRAPH['roseSize']       = 400;
@@ -110,19 +111,19 @@ function graph_common($graph) {
 //          ...
 //      ]
 function reorg_data($dat) {
-	$retVal = array();
-	$keys = array_keys($dat);
-	for ($i = 0; $i < count($keys); $i++) {
+    $retVal = array();
+    $keys = array_keys($dat);
+    for ($i = 0; $i < count($keys); $i++) {
         $key = $keys[$i];
-		$values = $dat[$key];
-		for ($j = 0; $j < count($values); $j++) {
+        $values = $dat[$key];
+        for ($j = 0; $j < count($values); $j++) {
             if ($i === 0) {
                 // JavaScript time in msecs, convert to secs
-				$retVal['time'][] = $values[$j][0] / 1000;
+                $retVal['time'][] = $values[$j][0] / 1000;
             }
             $retVal[$key][] = $values[$j][1];
         }
-	}
+    }
     return $retVal;
 }
 
@@ -135,35 +136,63 @@ function get_data($type) {
     // get the data
     switch ($type) {
     case 'temp':
-        $data = reorg_data(json_decode(file_get_contents($GRAPH['jsonloc'] . 'tempdata.json'), true));
-        $data['units'] = $config['temp']['units'];
+        if (file_exists($GRAPH['jsonloc'] . 'tempdata.json')) {
+            $data = reorg_data(json_decode(file_get_contents($GRAPH['jsonloc'] . 'tempdata.json'), true));
+            $data['units'] = $config['temp']['units'];
+        } else {
+            die('JSON file not found: ' . $GRAPH['jsonloc'] . 'tempdata.json');
+        }
         break;
     case 'hum':
-        $data = reorg_data(json_decode(file_get_contents($GRAPH['jsonloc'] . 'humdata.json'), true));
-        $data['units'] = 'RH %';
+        if (file_exists($GRAPH['jsonloc'] . 'humdata.json')) {
+            $data = reorg_data(json_decode(file_get_contents($GRAPH['jsonloc'] . 'humdata.json'), true));
+            $data['units'] = 'RH %';
+        } else {
+            die('JSON file not found: ' . $GRAPH['jsonloc'] . 'humdata.json');
+        }
         break;
     case 'press':
-        $data = reorg_data(json_decode(file_get_contents($GRAPH['jsonloc'] . 'pressdata.json'), true));
-        $data['units'] = $config['press']['units'];
+        if (file_exists($GRAPH['jsonloc'] . 'pressdata.json')) {
+            $data = reorg_data(json_decode(file_get_contents($GRAPH['jsonloc'] . 'pressdata.json'), true));
+            $data['units'] = $config['press']['units'];
+        } else {
+            die('JSON file not found: ' . $GRAPH['jsonloc'] . 'pressdata.json');
+        }
         break;
     case 'rain':
-        $data = reorg_data(json_decode(file_get_contents($GRAPH['jsonloc'] . 'raindata.json'), true));
-        $data['units'] = $config['rain']['units'];
+        if (file_exists($GRAPH['jsonloc'] . 'raindata.json')) {
+            $data = reorg_data(json_decode(file_get_contents($GRAPH['jsonloc'] . 'raindata.json'), true));
+            $data['units'] = $config['rain']['units'];
+        } else {
+            die('JSON file not found: ' . $GRAPH['jsonloc'] . 'raindata.json');
+        }
         break;
     case 'solar':
-        $data = reorg_data(json_decode(file_get_contents($GRAPH['jsonloc'] . 'solardata.json'), true));
-        $data['units'] = 'W/m²';
+        if (file_exists($GRAPH['jsonloc'] . 'solardata.json')) {
+            $data = reorg_data(json_decode(file_get_contents($GRAPH['jsonloc'] . 'solardata.json'), true));
+            $data['units'] = 'W/m²';
+        } else {
+            die('JSON file not found: ' . $GRAPH['jsonloc'] . 'solardata.json');
+        }
         break;
     case 'wdir':
-        $data = reorg_data(json_decode(file_get_contents($GRAPH['jsonloc'] . 'wdirdata.json'), true));
-        $data['units'] = '°';
+        if (file_exists($GRAPH['jsonloc'] . 'wdirdata.json')) {
+            $data = reorg_data(json_decode(file_get_contents($GRAPH['jsonloc'] . 'wdirdata.json'), true));
+            $data['units'] = '°';
+        } else {
+            die('JSON file not found: ' . $GRAPH['jsonloc'] . 'wdirdata.json');
+        }
         break;
     case 'wind':
-        $data = reorg_data(json_decode(file_get_contents($GRAPH['jsonloc'] . 'winddata.json'), true));
-        $data['units'] = $config['wind']['units'];
+        if (file_exists($GRAPH['jsonloc'] . 'winddata.json')) {
+            $data = reorg_data(json_decode(file_get_contents($GRAPH['jsonloc'] . 'winddata.json'), true));
+            $data['units'] = $config['wind']['units'];
+        } else {
+            die('JSON file not found: ' . $GRAPH['jsonloc'] . 'winddata.json');
+        }
         break;
     default:
-        die('Unknown JSON data file requested');
+        die('Unknown JSON data file requested: ' . $type);
         break;
     }
 
@@ -173,3 +202,4 @@ function get_data($type) {
 ############################################################################
 # END OF SCRIPT
 ############################################################################
+?>

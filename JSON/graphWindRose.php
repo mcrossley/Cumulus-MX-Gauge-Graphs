@@ -19,12 +19,12 @@ $name = basename($_SERVER['PHP_SELF'], '.php').'.png';
 
 
 //fetch the data
-//You have to call two variables from the clientraw, the winddir ($datay) and the speed ($datay1).
+//You have to call two arrays from the JSON, the winddir ($datay) and the speed ($datay1).
 $w1 = get_data('wdir');
 $w2 = get_data('wind');
 
-$datay = $w1['bearing'];
-$datay1 =$w2['wspeed'];
+$datay  = $w1['bearing'];
+$datay1 = $w2['wspeed'];
 
 //**************************************************************************************************************************************************
 
@@ -41,24 +41,28 @@ function getBin($deg) {
     }
 }
 
-//The rest of the script is clearly explained at the jpgraph website.
+//The rest of the script is clearly explained at the jpgraph website. Ha ha!
+
+// Get the number of data points
+$num_data = count($datay);
 
 // Loop through raw data arrays and place data into the appropriate arrays
 // depending on their wind direction
-for ($ii = 0; $ii < count($datay); $ii++) {
+for ($ii = 0; $ii < $num_data; $ii++) {
     $direction_array[getBin($datay[$ii])][] = $datay1[$ii];
 }
 
 // Calculate max windspeed, used for windrose range
 $max_wind = round(max($datay1), 0);
 
-// Get the number of data points
-$num_data = count($datay1);
-
 // Define the data range array for the windrose, this needs to be done
 // ahead of time because some of the computational aspects require this range
-$wind_range_max = $max_wind < 20 ? 25 : $max_wind;
-$data_range_array = array(1, 5, 10, 15, 20, $wind_range_max);
+$wind_range_max = $max_wind < 20 ? 20 : $max_wind;
+$data_range_array = array(1, 3, 5, 10, 15, $wind_range_max);
+//$data_range_array = array(1,2,3,5,6,10,13.5,99.0); // JPGraph defaults
+
+$range_colours = array('orange','black','blue','red','green');
+//$range_colours = array('orange','black','blue','red','green','purple','navy','yellow','brown');  // JPGraph defaults
 
 // Loop through dirction array based on direction keys and calculate the histogram
 // stats for each array.
@@ -66,7 +70,7 @@ foreach ($GRAPH['compass'] as $direction) {
 
     // Set up counter to determine how many data points there are within each
     // direction array and wind range.
-    for ($ii = 0; $ii <= 5; $ii++) {
+    for ($ii = 0; $ii <= count($data_range_array); $ii++) {
         $count_data[$ii] = 0;
     }
 
@@ -76,28 +80,24 @@ foreach ($GRAPH['compass'] as $direction) {
     // The windrose software needs to know the % of data points that fall into
     // each range for each wind direction.
     foreach ($raw_data as $temp_speed) {
-        if ($temp_speed >= 0 and $temp_speed < $data_range_array[0]) {
+        if ($temp_speed == 0) {
             $count_data[0]++;
-        } elseif ($temp_speed >= $data_range_array[0] and $temp_speed < $data_range_array[1]) {
+        } elseif ($temp_speed < $data_range_array[1]) {
             $count_data[1]++;
-        } elseif ($temp_speed >= $data_range_array[1] and $temp_speed < $data_range_array[2]) {
+        } elseif ($temp_speed < $data_range_array[2]) {
             $count_data[2]++;
-        } elseif ($temp_speed >= $data_range_array[2] and $temp_speed < $data_range_array[3]) {
+        } elseif ($temp_speed < $data_range_array[3]) {
             $count_data[3]++;
-        } elseif ($temp_speed >= $data_range_array[3] and $temp_speed < $data_range_array[4]) {
+        } elseif ($temp_speed < $data_range_array[4]) {
             $count_data[4]++;
-        } elseif ($temp_speed >= $data_range_array[4]) {
+        } elseif ($temp_speed < $data_range_array[5]) {
             $count_data[5]++;
         }
     }
 
     // Place all data in an array that can be used by JPGraph
-    // First set up data array
-    for ($ii = 0; $ii <= 5; $ii++) {
-        $plot_data[$direction][$ii] = 0;
-    }
-
-    for ($ii = 0; $ii <= 5; $ii++) {
+    for ($ii = 0; $ii <= count($data_range_array); $ii++) {
+        // Percentage of total for each bin into JPGraph data array
         $plot_data[$direction][$ii] = ($count_data[$ii] / $num_data) * 100;
     }
 }
@@ -123,8 +123,31 @@ for ($i=0; $i<11; $i++) {
     array_push($GRAPH['compass'], array_shift($GRAPH['compass']));
 }
 
+// add compass point labels
 $wp->SetCompassLabels($GRAPH['compass']);
 
+// set the bin ranges
+$wp->SetRanges($data_range_array);
+
+// set the bin colours
+$wp->SetRangeColors($range_colours );
+
+// set the % label size smaller
+$wp->scale->SetFont(FF_DEFAULT, FS_NORMAL, 7);
+
+// set the zero% label size
+$wp->scale->SetZFont(FF_DEFAULT, FS_NORMAL, 10);
+
+// set the legend margins smaller
+$wp->legend->SetMargin(5, 5);
+
+// Make the legend font really small!
+$wp->legend->SetLFont(FF_DEFAULT, FS_NORMAL, 7);
+
+// Make the legend labels use integers - default '%.1f'
+$wp->legend->SetFormat('%d');
+
+// add the plot to the graph
 $graph->Add($wp);
 
 // Add and send back to browser
