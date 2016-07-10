@@ -15,11 +15,12 @@ $GRAPH =  array();
 ############################################################################
 # CONFIGURATION INFORMATION
 ############################################################################
-$GRAPH['version']        = '1.3';
+$GRAPH['version']        = '1.4';
 $GRAPH['width']          = 600;
 $GRAPH['height']         = 300;
-$GRAPH['jsonloc']        = '/';
 $GRAPH['jpgraphloc']     = '/jpgraph/'; // Path to jpgraph, or put it in your PHP path
+                                        // NOTE: This is the *server* operating system path to the file, so unless you have added
+                                        // the web folder to your PHP path, it will be something like "/home/<userid>/www/jpgraph/"
 $GRAPH['cachetime']      = 10; // number of minutes to cache images
 $GRAPH['hours']          = 12; // number of hours to graph
 $GRAPH['uom']            = array('temp'=>'C', 'rain'=>'mm', 'wind'=>'mph', 'baro'=>'hPa', 'cloudbase'=>'feet');
@@ -170,3 +171,4 @@ function get_data($fields) {
 ############################################################################
 # END OF SCRIPT
 ############################################################################
+?>
