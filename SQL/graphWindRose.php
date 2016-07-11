@@ -34,10 +34,11 @@ function getBin($deg) {
     global $GRAPH;
 
     if ($GRAPH['rosePoints'] === 8) {
-        return $GRAPH['compass'][floor(($deg + 22.5) / 45) % 8];
+        $bin = floor(($deg + 22.5) / 45) % 8;
     } else {
-        return $GRAPH['compass'][floor(($deg + 11.25) / 22.5) % 16];
+        $bin = floor(($deg + 11.25) / 22.5) % 16;
     }
+    return $GRAPH['compass'][$bin];
 }
 
 //The rest of the script is clearly explained at the jpgraph website. Ha ha!
@@ -45,8 +46,12 @@ function getBin($deg) {
 // Get the number of data points
 $num_data = count($datay);
 
-// Loop through raw data arrays and place data into the appropriate arrays
-// depending on their wind direction
+// Initialise the arrays
+$direction_array = array();
+$plot_data = array();
+
+// Loop through raw data arrays and place data into the appropriate array
+// bin depending on their wind direction
 for ($ii = 0; $ii < $num_data; $ii++) {
     $direction_array[getBin($datay[$ii])][] = $datay1[$ii];
 }
@@ -59,21 +64,19 @@ $max_wind = round(max($datay1), 0);
 $wind_range_max = $max_wind < 20 ? 20 : $max_wind;
 $data_range_array = array(1, 3, 5, 10, 15, $wind_range_max);
 //$data_range_array = array(1,2,3,5,6,10,13.5,99.0); // JPGraph defaults
+
 $range_colours = array('orange','black','blue','red','green');
 //$range_colours = array('orange','black','blue','red','green','purple','navy','yellow','brown');  // JPGraph defaults
 
 // Loop through dirction array based on direction keys and calculate the histogram
-// stats for each array.
-foreach ($GRAPH['compass'] as $direction) {
+// stats for each direction. Note you only have to send directions with data to the WindRose plot
+foreach ($direction_array as $direction => $raw_data) {
 
     // Set up counter to determine how many data points there are within each
     // direction array and wind range.
-    for ($ii = 0; $ii <= count($data_range_array); $ii++) {
+    for ($ii = 0; $ii < count($data_range_array); $ii++) {
         $count_data[$ii] = 0;
     }
-
-    // Define raw data to be processed into array counters
-    $raw_data = $direction_array[$direction];
 
     // The windrose software needs to know the % of data points that fall into
     // each range for each wind direction.
@@ -94,7 +97,7 @@ foreach ($GRAPH['compass'] as $direction) {
     }
 
     // Place all data in an array that can be used by JPGraph
-    for ($ii = 0; $ii <= count($data_range_array); $ii++) {
+    for ($ii = 0; $ii < count($data_range_array); $ii++) {
         // Percentage of total for each bin into JPGraph data array
         $plot_data[$direction][$ii] = ($count_data[$ii] / $num_data) * 100;
     }

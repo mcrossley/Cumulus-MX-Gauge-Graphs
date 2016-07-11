@@ -15,7 +15,7 @@ $GRAPH =  array();
 ############################################################################
 # CONFIGURATION INFORMATION
 ############################################################################
-$GRAPH['version']        = '1.4';
+$GRAPH['version']        = '1.5';
 $GRAPH['width']          = 600;
 $GRAPH['height']         = 300;
 $GRAPH['jpgraphloc']     = '/jpgraph/'; // Path to jpgraph, or put it in your PHP path
