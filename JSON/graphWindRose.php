@@ -26,6 +26,8 @@ $w2 = get_data('wind');
 $datay  = $w1['bearing'];
 $datay1 = $w2['wspeed'];
 
+// initialise the data array
+$direction_array = array_fill_keys($GRAPH['compass'], array());
 //**************************************************************************************************************************************************
 
 //
@@ -42,13 +44,12 @@ function getBin($deg) {
     return $GRAPH['compass'][$bin];
 }
 
-// The rest of the script is clearly explained at the jpgraph website. Ha ha!
+// The rest of the script is clearly explained at the jpgraph website.
 
 // Get the number of data points
 $num_data = count($datay);
 
-// Initialise the arrays
-$direction_array = array();
+// Initialise the array
 $plot_data = array();
 
 // Loop through raw data arrays and place data into the appropriate array

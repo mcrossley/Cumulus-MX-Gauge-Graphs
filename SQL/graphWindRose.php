@@ -19,12 +19,14 @@ $name = basename($_SERVER['PHP_SELF'], '.php').'.png';
 
 
 //fetch the data
-//You have to call two arrays from the database, the winddir ($datay) and the speed ($datay1).
+//You have to fetch two columns from the database, the winddir ($datay) and the speed ($datay1).
 $w1 = get_data(array('bearing', 'wspeed'));
 
-$datay  = $w1['bearing'];
-$datay1 = $w1['wspeed'];
+$datay = $w1['bearing'];
+$datay1 =$w1['wspeed'];
 
+// initialise the data array
+$direction_array = array_fill_keys($GRAPH['compass'], array());
 //**************************************************************************************************************************************************
 
 //
@@ -41,23 +43,19 @@ function getBin($deg) {
     return $GRAPH['compass'][$bin];
 }
 
-//The rest of the script is clearly explained at the jpgraph website. Ha ha!
-
-// Get the number of data points
-$num_data = count($datay);
-
-// Initialise the arrays
-$direction_array = array();
-$plot_data = array();
+// The rest of the script is clearly explained at the jpgraph website.
 
 // Loop through raw data arrays and place data into the appropriate array
 // bin depending on their wind direction
-for ($ii = 0; $ii < $num_data; $ii++) {
+for ($ii = 0; $ii < count($datay); $ii++) {
     $direction_array[getBin($datay[$ii])][] = $datay1[$ii];
 }
 
 // Calculate max windspeed, used for windrose range
 $max_wind = round(max($datay1), 0);
+
+// Get the number of data points
+$num_data = count($datay1);
 
 // Define the data range array for the windrose, this needs to be done
 // ahead of time because some of the computational aspects require this range
@@ -69,7 +67,7 @@ $range_colours = array('orange','black','blue','red','green');
 //$range_colours = array('orange','black','blue','red','green','purple','navy','yellow','brown');  // JPGraph defaults
 
 // Loop through dirction array based on direction keys and calculate the histogram
-// stats for each direction. Note you only have to send directions with data to the WindRose plot
+// stats for each array.
 foreach ($direction_array as $direction => $raw_data) {
 
     // Set up counter to determine how many data points there are within each
@@ -98,7 +96,6 @@ foreach ($direction_array as $direction => $raw_data) {
 
     // Place all data in an array that can be used by JPGraph
     for ($ii = 0; $ii < count($data_range_array); $ii++) {
-        // Percentage of total for each bin into JPGraph data array
         $plot_data[$direction][$ii] = ($count_data[$ii] / $num_data) * 100;
     }
 }

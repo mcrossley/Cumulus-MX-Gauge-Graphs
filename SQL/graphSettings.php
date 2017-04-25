@@ -15,14 +15,14 @@ $GRAPH =  array();
 ############################################################################
 # CONFIGURATION INFORMATION
 ############################################################################
-$GRAPH['version']        = '1.5';
+$GRAPH['version']        = '1.6';
 $GRAPH['width']          = 600;
 $GRAPH['height']         = 300;
-$GRAPH['jpgraphloc']     = '/jpgraph/'; // Path to jpgraph, or put it in your PHP path
+$GRAPH['jpgraphloc']     = 'jpgraph/'; // Path to jpgraph, or put it in your PHP path
                                         // NOTE: This is the *server* operating system path to the file, so unless you have added
                                         // the web folder to your PHP path, it will be something like "/home/<userid>/www/jpgraph/"
 $GRAPH['cachetime']      = 10; // number of minutes to cache images
-$GRAPH['hours']          = 12; // number of hours to graph
+$GRAPH['hours']          = 24; // number of hours to graph
 $GRAPH['uom']            = array('temp'=>'C', 'rain'=>'mm', 'wind'=>'mph', 'baro'=>'hPa', 'cloudbase'=>'feet');
 $GRAPH['rosePoints']     = 16;  // 8 or 16
 $GRAPH['roseSize']       = 400;
@@ -46,16 +46,16 @@ date_default_timezone_set('UTC');
 
 // Current field names (matches tag fields) used
 $GRAPH['cvalues'] = array(
-    "date","time","temp","hum","dew","wspeed","wlatest","bearing","rrate",
-    "rfall","press","currentwdir","beaufortnumber","windunit","tempunitnodeg","pressunit","rainunit",
-    "windrun","presstrendval","rmonth","ryear","rfallY","intemp","inhum","wchill",
-    "temptrend","tempTH","TtempTH","tempTL","TtempTL",
-    "windTM","TwindTM","wgustTM","TwgustTM",
-    "pressTH","TpressTH","pressTL","TpressTL",
-    "version","build",
-    "wgust","heatindex","humidex","UV","ET","SolarRad","avgbearing",
-    "rhour","forecastnumber","isdaylight","SensorContactLost","wdir","cloudbasevalue","cloudbaseunit",
-    "apptemp","SunshineHours","CurrentSolarmax","IsSunny");
+    'date','time','temp','hum','dew','wspeed','wlatest','bearing','rrate',
+    'rfall','press','currentwdir','beaufortnumber','windunit','tempunitnodeg','pressunit','rainunit',
+    'windrun','presstrendval','rmonth','ryear','rfallY','intemp','inhum','wchill',
+    'temptrend','tempTH','TtempTH','tempTL','TtempTL',
+    'windTM','TwindTM','wgustTM','TwgustTM',
+    'pressTH','TpressTH','pressTL','TpressTL',
+    'version','build',
+    'wgust','heatindex','humidex','UV','ET','SolarRad','avgbearing',
+    'rhour','forecastnumber','isdaylight','SensorContactLost','wdir','cloudbasevalue','cloudbaseunit',
+    'apptemp','SunshineHours','CurrentSolarmax','IsSunny');
 
 
 ############################################################################
@@ -122,9 +122,9 @@ function get_data($fields) {
       die('Failed to connect to the database server - ' . $mysqli->connect_error);
     }
 
-    $result = $mysqli->query("SET time_zone='UTC'");
+    $result = $mysqli->query('SET time_zone="UTC"');
     if (!$result) {
-        die("ERROR - TZ Statement");
+        die('ERROR - TZ Statement');
     }
 
     $cols = '';

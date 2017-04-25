@@ -4,6 +4,8 @@ These scripts are intended to create simple static graphs for use on your web pa
 
 The graphs are drawn using [JPGraphs](http://jpgraph.net/), so you need a copy of this package on your web server for these scripts to work.
 
+You will need JPGraphs version 4.0 or later for PHP 7 support.
+
 The scripts use the JPGraphs file caching system, the images are generated on demand, but pulled from the cache if the previous version is within the time (default is 10 minutes). I didn't like the overhead of a cron job endlessly redrawing them if nobody needs them.
 
 There are two flavours of the scripts in the repository, the first uses the JSON data files that CumulusMX generates, if you intend to use this flavour, then you will need to configure CumulusMX to upload the JSON data files to your web server.

@@ -15,12 +15,13 @@ $GRAPH =  array();
 ############################################################################
 # CONFIGURATION INFORMATION
 ############################################################################
-$GRAPH['version']        = '1.5';
+$GRAPH['version']        = '1.6';
 $GRAPH['width']          = 600;
 $GRAPH['height']         = 300;
-$GRAPH['jsonloc']        = '/';         // NOTE: This is the *server* operating system path to the file, so unless you have added
+$GRAPH['jsonloc']        = '/usr/share/CumulusMX/web/';
+//$GRAPH['jsonloc']        = '/';         // NOTE: This is the *server* operating system path to the file, so unless you have added
                                         // the web folder to your PHP path, it will be something like "/home/<userid>/www/"
-$GRAPH['jpgraphloc']     = '/jpgraph/'; // NOTE: Same path type as json above
+$GRAPH['jpgraphloc']     = 'jpgraph/';  // NOTE: Same path type as json above
 $GRAPH['cachetime']      = 10;
 $GRAPH['rosePoints']     = 16;  // 8 or 16
 $GRAPH['roseSize']       = 400;
