@@ -15,7 +15,7 @@ $GRAPH =  array();
 ############################################################################
 # CONFIGURATION INFORMATION
 ############################################################################
-$GRAPH['version']        = '1.6';
+$GRAPH['version']        = '1.7';
 $GRAPH['width']          = 600;
 $GRAPH['height']         = 300;
 $GRAPH['jpgraphloc']     = 'jpgraph/'; // Path to jpgraph, or put it in your PHP path
@@ -39,7 +39,7 @@ include $GRAPH['jpgraphloc'] . 'jpgraph_line.php';
 include $GRAPH['jpgraphloc'] . 'jpgraph_scatter.php';
 include $GRAPH['jpgraphloc'] . 'jpgraph_date.php';
 include $GRAPH['jpgraphloc'] . 'jpgraph_plotline.php';
-include $GRAPH['jpgraphloc'] . 'jpgraph_windrose.php';
+# include $GRAPH['jpgraphloc'] . 'jpgraph_windrose.php';
 
 // Set the TZ to UTC so times display in 'station' time
 date_default_timezone_set('UTC');
