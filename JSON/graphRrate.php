@@ -27,20 +27,17 @@ graph_common($graph);
 $graph->title->Set('Rainfall Rate (' . $data['units']. '/h)');
 
 // Create the linear plot
-$lineplot1 = new LinePlot($data['rrate'], $data['time']);
-$lineplot1->SetWeight(2);
+if (isset($data['rrate'])) {
+    $lineplot1 = new LinePlot($data['rrate'], $data['time']);
+    $lineplot1->SetWeight(2);
+    $lineplot1->SetColor("#B22222:1.3");
+    $graph->Add($lineplot1);
+}
 
 $graph->xaxis->scale->setAutoMin(0);
 $graph->yaxis->scale->SetGrace(5, 0);
 $graph->yaxis->SetLabelFormatString($data['units'] === 'in' ? "%02.2f" : "%02.1f");
 
-// Add the plot to the graph
-$graph->Add($lineplot1);
-
-$lineplot1->SetColor("#B22222:1.3");
-
 // Display the graph
 @unlink(CACHE_DIR . $name);
 $graph->Stroke();
-
-?>

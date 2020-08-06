@@ -32,30 +32,29 @@ $graph->yaxis->scale->SetGrace(0, 0);
 $graph->yaxis->HideTicks(false, true);
 
 // Create the scatter plot
-$scatplot1 = new ScatterPlot($data['avgbearing'], $data['time']);
-$scatplot1->SetWeight(2);
-$scatplot1->SetLegend('Average Direction');
-$scatplot1->mark->SetType(MARK_FILLEDCIRCLE);
-$scatplot1->mark->SetWidth(3);
-$scatplot1->mark->SetColor("#B22222:1.3");
-$scatplot1->mark->SetFillColor("#B22222:1.3");
-
-$scatplot2 = new ScatterPlot($data['bearing'], $data['time']);
-$scatplot2->SetWeight(2);
-$scatplot2->SetLegend('Wind Direction');
-$scatplot2->mark->SetType(MARK_CROSS);
-$scatplot2->mark->SetWidth(3);
-$scatplot2->mark->SetColor("#000:1.3");
-$scatplot2->mark->SetFillColor("#000:1.3");
-
-// Add the plots to the graph - put average plot on top
-$graph->Add($scatplot2);
-$graph->Add($scatplot1);
+if (isset($data['bearing'])) {
+    $scatplot2 = new ScatterPlot($data['bearing'], $data['time']);
+    $scatplot2->SetWeight(2);
+    $scatplot2->SetLegend('Wind Direction');
+    $scatplot2->mark->SetType(MARK_CROSS);
+    $scatplot2->mark->SetWidth(3);
+    $scatplot2->mark->SetColor("#000:1.3");
+    $scatplot2->mark->SetFillColor("#000:1.3");
+    $graph->Add($scatplot2);
+}
+if (isset($data['avgbearing'])) {
+    $scatplot1 = new ScatterPlot($data['avgbearing'], $data['time']);
+    $scatplot1->SetWeight(2);
+    $scatplot1->SetLegend('Average Direction');
+    $scatplot1->mark->SetType(MARK_FILLEDCIRCLE);
+    $scatplot1->mark->SetWidth(3);
+    $scatplot1->mark->SetColor("#B22222:1.3");
+    $scatplot1->mark->SetFillColor("#B22222:1.3");
+    $graph->Add($scatplot1);
+}
 
 $graph->setClipping(true);
 
 // Display the graph
 @unlink(CACHE_DIR . $name);
 $graph->Stroke();
-
-?>

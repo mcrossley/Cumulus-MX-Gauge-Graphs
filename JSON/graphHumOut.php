@@ -27,20 +27,17 @@ graph_common($graph);
 $graph->title->Set('Relative Humidity (' . $data['units']. ')');
 
 // Create the linear plot
-$lineplot1 = new LinePlot($data['hum'], $data['time']);
-$lineplot1->SetWeight(2);
-$lineplot1->SetLegend('Outdoor humidity');
+if (isset($data['hum'])) {
+    $lineplot1 = new LinePlot($data['hum'], $data['time']);
+    $lineplot1->SetWeight(2);
+    $lineplot1->SetLegend('Outdoor humidity');
+    $lineplot1->SetColor("#B22222:1.3");
+    $graph->Add($lineplot1);
+}
 
 $graph->yaxis->scale->SetAutoMax(100);
 $graph->yaxis->scale->SetGrace(0, 5);
 
-// Add the plot to the graph
-$graph->Add($lineplot1);
-
-$lineplot1->SetColor("#B22222:1.3");
-
 // Display the graph
 @unlink(CACHE_DIR . $name);
 $graph->Stroke();
-
-?>

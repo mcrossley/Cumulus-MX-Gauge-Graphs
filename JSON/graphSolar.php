@@ -27,27 +27,24 @@ graph_common($graph);
 $graph->title->Set('Solar Irradiance (' . $data['units']. ')');
 
 // Create the linear plot
-$lineplot1 = new LinePlot($data['CurrentSolarMax'], $data['time']);
-$lineplot1->SetWeight(2);
-$lineplot1->SetLegend('Theoretical solar max');
-
-$lineplot2 = new LinePlot($data['SolarRad'], $data['time']);
-$lineplot2->SetWeight(2);
-$lineplot2->SetLegend('Solar radiation');
-
+if (isset($data['CurrentSolarMax'])) {
+    $lineplot1 = new LinePlot($data['CurrentSolarMax'], $data['time']);
+    $lineplot1->SetWeight(2);
+    $lineplot1->SetLegend('Theoretical solar max');
+    $lineplot1->SetColor("#2222B2:1.3");
+    $graph->Add($lineplot1);
+}
+if (isset($data['SolarRad'])) {
+    $lineplot2 = new LinePlot($data['SolarRad'], $data['time']);
+    $lineplot2->SetWeight(2);
+    $lineplot2->SetLegend('Solar radiation');
+    $lineplot2->SetColor("#B22222:1.3");
+    $graph->Add($lineplot2);
+}
 
 $graph->xaxis->scale->setAutoMin(0);
 $graph->yaxis->scale->SetGrace(5, 0);
 
-// Add the plot to the graph
-$graph->Add($lineplot1);
-$graph->Add($lineplot2);
-
-$lineplot1->SetColor("#2222B2:1.3");
-$lineplot2->SetColor("#B22222:1.3");
-
 // Display the graph
 @unlink(CACHE_DIR . $name);
 $graph->Stroke();
-
-?>

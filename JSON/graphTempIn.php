@@ -27,19 +27,16 @@ graph_common($graph);
 $graph->title->Set('Indoor Temperature (°' . $data['units']. ')');
 
 // Create the linear plot
-$lineplot1 = new LinePlot($data['intemp'], $data['time']);
-$lineplot1->SetWeight(2);
+if (isset($data['intemp'])) {
+    $lineplot1 = new LinePlot($data['intemp'], $data['time']);
+    $lineplot1->SetWeight(2);
+    $lineplot1->SetColor("#B22222:1.3");
+    $graph->Add($lineplot1);
+}
 
 $line = new PlotLine(HORIZONTAL,0,"blue@0.5",2);
 $graph->AddLine($line);
 
-// Add the plot to the graph
-$graph->Add($lineplot1);
-
-$lineplot1->SetColor("#B22222:1.3");
-
 // Display the graph
 @unlink(CACHE_DIR . $name);
 $graph->Stroke();
-
-?>

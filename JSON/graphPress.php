@@ -27,20 +27,16 @@ graph_common($graph);
 $graph->title->Set('Barograph (' . $data['units']. ')');
 
 // Create the linear plot
-$lineplot1 = new LinePlot($data['press'], $data['time']);
-$lineplot1->SetWeight(2);
-
+if (isset($data['press'])) {
+    $lineplot1 = new LinePlot($data['press'], $data['time']);
+    $lineplot1->SetWeight(2);
+    $lineplot1->SetColor("#2222B2:1.3");
+    $graph->Add($lineplot1);
+}
 // Force labels to only be displayed every 1000 ft, tick every 500
 $graph->yaxis->scale->ticks->Set(1000, 500);
 $graph->yaxis->SetLabelFormatString("%02.0f");
 
-// Add the plot to the graph
-$graph->Add($lineplot1);
-
-$lineplot1->SetColor("#2222B2:1.3");
-
 // Display the graph
 @unlink(CACHE_DIR . $name);
 $graph->Stroke();
-
-?>

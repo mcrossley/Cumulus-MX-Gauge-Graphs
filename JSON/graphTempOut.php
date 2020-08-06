@@ -27,38 +27,39 @@ graph_common($graph);
 $graph->title->Set('Temperature (°' . $data['units']. ')');
 
 // Create the linear plot
-$lineplot1 = new LinePlot($data['temp'], $data['time']);
-$lineplot1->SetWeight(2);
-$lineplot1->SetLegend('Temperature');
+if (isset($data['dew'])) {
+    $lineplot2 = new LinePlot($data['dew'], $data['time']);
+    $lineplot2->SetWeight(2);
+    $lineplot2->SetLegend('Dewpoint');
+    $lineplot2->SetColor("#2222B2:1.3");
+    $graph->Add($lineplot2);
+}
+if (isset($data['apptemp'])) {
+    $lineplot3 = new LinePlot($data['apptemp'], $data['time']);
+    $lineplot3->SetWeight(2);
+    $lineplot3->SetLegend('Apparent');
+    $lineplot3->SetColor("#22B222:1.3");
+    $graph->Add($lineplot3);
+}
+if (isset($data['wchill'])) {
+    $lineplot4 = new LinePlot($data['wchill'], $data['time']);
+    $lineplot4->SetWeight(2);
+    $lineplot4->SetLegend('Wind Chill');
+    $graph->Add($lineplot4);
+}
 
-$lineplot2 = new LinePlot($data['dew'], $data['time']);
-$lineplot2->SetWeight(2);
-$lineplot2->SetLegend('Dewpoint');
-
-$lineplot3 = new LinePlot($data['apptemp'], $data['time']);
-$lineplot3->SetWeight(2);
-$lineplot3->SetLegend('Apparent');
-
-$lineplot4 = new LinePlot($data['wchill'], $data['time']);
-$lineplot4->SetWeight(2);
-$lineplot4->SetLegend('Wind Chill');
+if (isset($data['temp'])) {
+    $lineplot1 = new LinePlot($data['temp'], $data['time']);
+    $lineplot1->SetWeight(2);
+    $lineplot1->SetLegend('Temperature');
+    $lineplot1->SetColor("#B22222:1.3");
+    $graph->Add($lineplot1);
+}
 
 $line = new PlotLine(HORIZONTAL,0,"blue@0.5",2);
 $graph->AddLine($line);
 $graph->setClipping(true);
 
-// Add the plot to the graph
-$graph->Add($lineplot2);
-$graph->Add($lineplot3);
-$graph->Add($lineplot4);
-$graph->Add($lineplot1);
-
-$lineplot1->SetColor("#B22222:1.3");
-$lineplot2->SetColor("#2222B2:1.3");
-$lineplot3->SetColor("#22B222:1.3");
-
 // Display the graph
 @unlink(CACHE_DIR . $name);
 $graph->Stroke();
-
-?>

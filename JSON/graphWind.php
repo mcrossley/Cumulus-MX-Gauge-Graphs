@@ -27,26 +27,24 @@ graph_common($graph);
 $graph->title->Set('Wind (' . $data['units'] . ')');
 
 // Create the linear plot
-$lineplot1 = new LinePlot($data['wspeed'], $data['time']);
-$lineplot1->SetWeight(2);
-$lineplot1->SetLegend('Average speed');
-
-$lineplot2 = new LinePlot($data['wgust'], $data['time']);
-$lineplot2->SetWeight(2);
-$lineplot2->SetLegend('Wind Gust');
+if (isset($data['wgust'])) {
+    $lineplot2 = new LinePlot($data['wgust'], $data['time']);
+    $lineplot2->SetWeight(2);
+    $lineplot2->SetLegend('Wind Gust');
+    $lineplot2->SetColor("#2222B2:1.3");
+    $graph->Add($lineplot2);
+}
+if (isset($data['wspeed'])) {
+    $lineplot1 = new LinePlot($data['wspeed'], $data['time']);
+    $lineplot1->SetWeight(2);
+    $lineplot1->SetLegend('Average speed');
+    $lineplot1->SetColor("#B22222:1.3");
+    $graph->Add($lineplot1);
+}
 
 $graph->xaxis->scale->setAutoMin(0);
 $graph->yaxis->scale->SetGrace(5, 0);
 
-// Add the plot to the graph
-$graph->Add($lineplot2);
-$graph->Add($lineplot1);
-
-$lineplot1->SetColor("#B22222:1.3");
-$lineplot2->SetColor("#2222B2:1.3");
-
 // Display the graph
 @unlink(CACHE_DIR . $name);
 $graph->Stroke();
-
-?>

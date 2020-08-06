@@ -41,6 +41,6 @@ Mark Wittl has kindly contributed a WindRose script, if you want to use this gra
 `define('TTF_DIR','<YOUR_PATH>/jpgraph/fonts/');`
 You will need the following font files `arial.ttf` and `verdana.ttf`
 
-Good luck, you can normally find me on the [Cumulus forum](http://sandaysoft.com/forum)
+Good luck, you can normally find me on the [Cumulus forum](https://cumulus.hosiene.co.uk/)
 
 Mark
